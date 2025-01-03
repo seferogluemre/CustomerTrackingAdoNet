@@ -38,8 +38,9 @@ namespace CustomerTrackingAdoNet
                 addCommand.ExecuteNonQuery();
                 DataGridListCity();
                 label4.Visible = true;
+                label4.Text = "Yeni şehir eklendi";
                 // 3 saniye bekle
-                await Task.Delay(3000);
+                await Task.Delay(2500);
 
                 // Mesajı tekrar gizle
                 label4.Visible = false;
@@ -51,7 +52,7 @@ namespace CustomerTrackingAdoNet
             }
             connection.Connection().Close();
         }
-        private void deletingCityFromCityTable()
+        private async Task deletingCityFromCityTableAsync()
         {
             SqlCommand deleteCommand = new SqlCommand("Delete from TblCity where CityId=@cityId", connection.Connection());
             deleteCommand.Parameters.AddWithValue("@cityId", TxtCityNo.Text);
@@ -66,6 +67,11 @@ namespace CustomerTrackingAdoNet
                 else
                 {
                     deleteCommand.ExecuteNonQuery();
+                    label4.Visible = true;
+                    label4.Text = "Şehir silindi";
+                    await Task.Delay(2500);
+                    // Mesajı tekrar gizle
+                    label4.Visible = false;
                 }
             }
             DataGridListCity();
@@ -97,7 +103,41 @@ namespace CustomerTrackingAdoNet
             DataGridListCity();
             connection.Connection().Close();
         }
-        
+        private async Task searchCityAsync()
+        {
+            SqlCommand searchCommand = new SqlCommand("Select * from TblCity where CityName=@cityName", connection.Connection());
+            searchCommand.Parameters.AddWithValue("@cityName", TxtCityName.Text);
+            if (TxtCityName.Text.Trim() != "")
+            {
+                SqlDataReader dataReader = searchCommand.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    label4.Visible = true;
+                    label4.Text = "Şehir Sorgusu başarılı";
+                    // 3 saniye bekle
+                    TxtCityNo.Text = dataReader[0].ToString();
+                    TxtCityName.Text = dataReader[1].ToString();
+                    TxtCountry.Text = dataReader[2].ToString();
+
+                    await Task.Delay(2500);
+                    // Mesajı tekrar gizle
+                    label4.Visible = false;
+                }
+                else
+                {
+                    label4.Visible = true;
+                    label4.Text = "Aranan şehir bulunamadı /:";
+                    await Task.Delay(2500);
+                    // Mesajı tekrar gizle
+                    label4.Visible = false;
+                    // 3 saniye bekle
+                }
+            }
+            else
+            {
+                MessageBox.Show("Boş alan bırakmayınız", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -116,7 +156,7 @@ namespace CustomerTrackingAdoNet
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            deletingCityFromCityTable();
+           _ = deletingCityFromCityTableAsync();
         }
 
         private void BtnUpdate_Click(object sender, EventArgs e)
@@ -126,7 +166,7 @@ namespace CustomerTrackingAdoNet
 
         private void BtnSearch_Click(object sender, EventArgs e)
         {
-
+            _ = searchCityAsync();
         }
     }
 }
