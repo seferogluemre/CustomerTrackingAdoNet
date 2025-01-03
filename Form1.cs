@@ -27,7 +27,27 @@ namespace CustomerTrackingAdoNet
             dataGridView1.DataSource = dataTable;
             connection.Connection().Close();
         }
+        private async Task addToCityTableAsync()
+        {
+            SqlCommand addCommand = new SqlCommand("insert into TblCity (CityName,CityCountry) values (@cityName,@cityCountry)", connection.Connection());
+            addCommand.Parameters.AddWithValue("@cityName", TxtCityName.Text);
+            addCommand.Parameters.AddWithValue("@cityCountry", TxtCountry.Text);
+            addCommand.ExecuteNonQuery();
+            connection.Connection().Close();
+            DataGridListCity();
 
+            label4.Visible = true;
+            // 3 saniye bekle
+            await Task.Delay(3000);
+
+            // Mesajı tekrar gizle
+            label4.Visible = false;
+        }
+
+        private void deletingCityFromCityTable()
+        {
+            SqlCommand deleteCommand = new SqlCommand("",connection.Connection());
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -37,6 +57,11 @@ namespace CustomerTrackingAdoNet
         private void BtnList_Click(object sender, EventArgs e)
         {
             DataGridListCity();
+        }
+
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            _ = addToCityTableAsync();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace CustomerTrackingAdoNet
     {
         public SqlConnection Connection()
         {
-            SqlConnection baglantı = new SqlConnection("Data Source=EMRE_SEFEROGLU\\SQLEXPRESS;Initial Catalog=DbCustomer;Integrated Security=True;Encrypt=False;Trust Server Certificate=True");
+            SqlConnection baglantı = new SqlConnection("Data Source=EMRE_SEFEROGLU\\SQLEXPRESS;Initial Catalog=DbCustomer;Integrated Security=True;Encrypt=False");
             baglantı.Open();
             return baglantı;
         }
