@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,7 +12,7 @@ namespace CustomerTrackingAdoNet
         {
             InitializeComponent();
         }
-        DbSqlConnection connection=new DbSqlConnection();
+        DbSqlConnection connection = new DbSqlConnection();
         private void DataGridListCity()
         {
             SqlCommand listCommand = new SqlCommand("Select * from TblCity", connection.Connection());
@@ -42,11 +37,51 @@ namespace CustomerTrackingAdoNet
 
             // Mesajı tekrar gizle
             label4.Visible = false;
-        }
 
+        }
         private void deletingCityFromCityTable()
         {
-            SqlCommand deleteCommand = new SqlCommand("",connection.Connection());
+            SqlCommand deleteCommand = new SqlCommand("Delete from TblCity where CityId=@cityId", connection.Connection());
+            deleteCommand.Parameters.AddWithValue("@cityId", TxtCityNo.Text);
+            DialogResult tepki = new DialogResult();
+            tepki = MessageBox.Show($"{TxtCityNo.Text} numaralı şehri silmek istediginize emin misiniz?", "Emin misiniz?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (tepki == DialogResult.Yes)
+            {
+                if (TxtCityNo.Text.Trim() == "")
+                {
+                    MessageBox.Show("Boş numara girişi tekrar deneyin", "Hatalı giriş", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    deleteCommand.ExecuteNonQuery();
+                }
+            }
+            DataGridListCity();
+            connection.Connection().Close();
+        }
+        private async Task updateCityDataAsync()
+        {
+            SqlCommand updateCommand = new SqlCommand("Update TblCity Set CityName=@cityName,CityCountry=@cityCountry where CityId=@cityId", connection.Connection());
+            updateCommand.Parameters.AddWithValue("@cityId", TxtCityNo.Text);
+            updateCommand.Parameters.AddWithValue("@cityName", TxtCityName.Text);
+            updateCommand.Parameters.AddWithValue("@cityCountry", TxtCountry.Text);
+            if (TxtCityNo.Text.Trim() == "")
+            {
+                MessageBox.Show("Boş numara girişi tekrar deneyin", "Hatalı giriş", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                updateCommand.ExecuteNonQuery();
+                label4.Visible = true;
+                label4.Text = "Şehir Bilgisi güncellendi";
+                // 3 saniye bekle
+                await Task.Delay(2500);
+
+                // Mesajı tekrar gizle
+                label4.Visible = false;
+            }
+            DataGridListCity();
+            connection.Connection().Close();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -62,6 +97,16 @@ namespace CustomerTrackingAdoNet
         private void BtnAdd_Click(object sender, EventArgs e)
         {
             _ = addToCityTableAsync();
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            deletingCityFromCityTable();
+        }
+
+        private void BtnUpdate_Click(object sender, EventArgs e)
+        {
+            _ = updateCityDataAsync();
         }
     }
 }

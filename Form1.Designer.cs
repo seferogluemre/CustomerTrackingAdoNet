@@ -148,6 +148,7 @@
             this.BtnDelete.TabIndex = 11;
             this.BtnDelete.Text = "Sil";
             this.BtnDelete.UseVisualStyleBackColor = false;
+            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
             // BtnUpdate
             // 
@@ -160,6 +161,7 @@
             this.BtnUpdate.TabIndex = 12;
             this.BtnUpdate.Text = "Güncelle";
             this.BtnUpdate.UseVisualStyleBackColor = false;
+            this.BtnUpdate.Click += new System.EventHandler(this.BtnUpdate_Click);
             // 
             // BtnSearch
             // 
