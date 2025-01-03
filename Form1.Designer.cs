@@ -174,6 +174,7 @@
             this.BtnSearch.TabIndex = 13;
             this.BtnSearch.Text = "Ara";
             this.BtnSearch.UseVisualStyleBackColor = false;
+            this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // label4
             // 

@@ -13,6 +13,12 @@ namespace CustomerTrackingAdoNet
             InitializeComponent();
         }
         DbSqlConnection connection = new DbSqlConnection();
+        void clearAreas()
+        {
+            TxtCityName.Clear();
+            TxtCityNo.Clear();
+            TxtCountry.Clear();
+        }
         private void DataGridListCity()
         {
             SqlCommand listCommand = new SqlCommand("Select * from TblCity", connection.Connection());
@@ -27,17 +33,23 @@ namespace CustomerTrackingAdoNet
             SqlCommand addCommand = new SqlCommand("insert into TblCity (CityName,CityCountry) values (@cityName,@cityCountry)", connection.Connection());
             addCommand.Parameters.AddWithValue("@cityName", TxtCityName.Text);
             addCommand.Parameters.AddWithValue("@cityCountry", TxtCountry.Text);
-            addCommand.ExecuteNonQuery();
+            if(TxtCityName.Text.Length> 3 && TxtCountry.Text.Length>3 ) 
+            {
+                addCommand.ExecuteNonQuery();
+                DataGridListCity();
+                label4.Visible = true;
+                // 3 saniye bekle
+                await Task.Delay(3000);
+
+                // Mesajı tekrar gizle
+                label4.Visible = false;
+                clearAreas();
+            }
+            else
+            {
+                MessageBox.Show("Hatalı veri girişi lütfen tekrar deneyin", "Kısa uzunlukta veri girişi",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+            }
             connection.Connection().Close();
-            DataGridListCity();
-
-            label4.Visible = true;
-            // 3 saniye bekle
-            await Task.Delay(3000);
-
-            // Mesajı tekrar gizle
-            label4.Visible = false;
-
         }
         private void deletingCityFromCityTable()
         {
@@ -57,6 +69,7 @@ namespace CustomerTrackingAdoNet
                 }
             }
             DataGridListCity();
+            clearAreas();
             connection.Connection().Close();
         }
         private async Task updateCityDataAsync()
@@ -80,9 +93,11 @@ namespace CustomerTrackingAdoNet
                 // Mesajı tekrar gizle
                 label4.Visible = false;
             }
+            clearAreas();
             DataGridListCity();
             connection.Connection().Close();
         }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -107,6 +122,11 @@ namespace CustomerTrackingAdoNet
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
             _ = updateCityDataAsync();
+        }
+
+        private void BtnSearch_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
