@@ -48,6 +48,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -173,7 +174,7 @@
             this.BtnList.ForeColor = System.Drawing.Color.FloralWhite;
             this.BtnList.Location = new System.Drawing.Point(32, 336);
             this.BtnList.Name = "BtnList";
-            this.BtnList.Size = new System.Drawing.Size(313, 36);
+            this.BtnList.Size = new System.Drawing.Size(141, 36);
             this.BtnList.TabIndex = 15;
             this.BtnList.Text = "Listele";
             this.BtnList.UseVisualStyleBackColor = false;
@@ -246,12 +247,27 @@
             this.radioButton2.Text = "Pasif";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(103)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft JhengHei", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.FloralWhite;
+            this.button1.Location = new System.Drawing.Point(204, 336);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(141, 36);
+            this.button1.TabIndex = 34;
+            this.button1.Text = "Prosedür";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FrmCustomer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1188, 549);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.label6);
@@ -306,5 +322,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.Button button1;
     }
 }

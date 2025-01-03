@@ -19,9 +19,10 @@ namespace CustomerTrackingAdoNet
         }
 
         DbSqlConnection connection = new DbSqlConnection();
+        string queryOption = "";
         private void dataGridCustomerList()
         {
-            SqlCommand listCommand = new SqlCommand("select CustomerId,CustomerName,CustomerSurname,CustomerBalance,CustomerStatus,CityName from TblCustomer Inner join TblCity on TblCity.CityId=TblCustomer.CustomerCity", connection.Connection());
+            SqlCommand listCommand = new SqlCommand(queryOption, connection.Connection());
             SqlDataAdapter adapter = new SqlDataAdapter(listCommand);
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);
@@ -32,7 +33,13 @@ namespace CustomerTrackingAdoNet
 
         private void BtnList_Click(object sender, EventArgs e)
         {
+            queryOption = "select CustomerId,CustomerName,CustomerSurname,CustomerBalance,CustomerStatus,CityName from TblCustomer Inner join TblCity on TblCity.CityId=TblCustomer.CustomerCity";
             dataGridCustomerList();
+        }
+
+        private void dataGridCustomerList(string v)
+        {
+            throw new NotImplementedException();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -53,6 +60,12 @@ namespace CustomerTrackingAdoNet
                 CmbCustomerCity.SelectedIndex = 0;
             }
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            queryOption = "Execute CustomerListWithCity";
+            dataGridCustomerList();
         }
     }
 }
