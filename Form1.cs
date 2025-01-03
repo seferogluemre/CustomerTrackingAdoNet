@@ -30,26 +30,37 @@ namespace CustomerTrackingAdoNet
         }
         private async Task addToCityTableAsync()
         {
-            SqlCommand addCommand = new SqlCommand("insert into TblCity (CityName,CityCountry) values (@cityName,@cityCountry)", connection.Connection());
-            addCommand.Parameters.AddWithValue("@cityName", TxtCityName.Text);
-            addCommand.Parameters.AddWithValue("@cityCountry", TxtCountry.Text);
-            if(TxtCityName.Text.Length> 3 && TxtCountry.Text.Length>3 ) 
+            SqlCommand command = new SqlCommand("select * from TblCity where CityName=@cityNameSearch", connection.Connection());
+            SqlDataReader dataReader = command.ExecuteReader();
+            command.Parameters.AddWithValue("@cityNameSearch", TxtCityName.Text);
+            if (dataReader.Read())
             {
-                addCommand.ExecuteNonQuery();
-                DataGridListCity();
-                label4.Visible = true;
-                label4.Text = "Yeni şehir eklendi";
-                // 3 saniye bekle
-                await Task.Delay(2500);
-
-                // Mesajı tekrar gizle
-                label4.Visible = false;
-                clearAreas();
+                MessageBox.Show("Aynı şehiri 1'den fazla eklenemez", "Uyarı aynı şehiri eklemeye çalışıyorsunuz", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
             }
             else
             {
-                MessageBox.Show("Hatalı veri girişi lütfen tekrar deneyin", "Kısa uzunlukta veri girişi",MessageBoxButtons.OK,MessageBoxIcon.Stop);
-            }
+                SqlCommand addCommand = new SqlCommand("insert into TblCity (CityName,CityCountry) values (@cityName,@cityCountry)", connection.Connection());
+                addCommand.Parameters.AddWithValue("@cityName", TxtCityName.Text);
+                addCommand.Parameters.AddWithValue("@cityCountry", TxtCountry.Text);
+                if (TxtCityName.Text.Length > 3 && TxtCountry.Text.Length > 3)
+                {
+                    addCommand.ExecuteNonQuery();
+                    DataGridListCity();
+                    label4.Visible = true;
+                    label4.Text = "Yeni şehir eklendi";
+                    // 3 saniye bekle
+                    await Task.Delay(2500);
+
+                    // Mesajı tekrar gizle
+                    label4.Visible = false;
+                    clearAreas();
+                }
+                else
+                {
+                    MessageBox.Show("Hatalı veri girişi lütfen tekrar deneyin", "Kısa uzunlukta veri girişi", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+
+            } 
             connection.Connection().Close();
         }
         private async Task deletingCityFromCityTableAsync()
@@ -167,6 +178,21 @@ namespace CustomerTrackingAdoNet
         private void BtnSearch_Click(object sender, EventArgs e)
         {
             _ = searchCityAsync();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Eğer tıklanan hücre geçerli bir hücre değilse (örneğin sütun başlığına tıklanmışsa), işlem yapma.
+            if (e.RowIndex >= 0)
+            {
+                // Tıklanan satırın tüm hücrelerine erişmek için DataGridViewRow nesnesini alalım.
+                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
+
+                // TextBox'lara değerleri aktarma
+                TxtCityNo.Text = selectedRow.Cells["CityId"].Value?.ToString(); // "CityNo" sütunundaki veri
+                TxtCityName.Text = selectedRow.Cells["CityName"].Value?.ToString(); // "CityName" sütunundaki veri
+                TxtCountry.Text = selectedRow.Cells["CityCountry"].Value?.ToString(); // "CityCountry" sütunundaki veri
+            }
         }
     }
 }

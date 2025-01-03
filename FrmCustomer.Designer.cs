@@ -177,6 +177,7 @@
             this.BtnList.TabIndex = 15;
             this.BtnList.Text = "Listele";
             this.BtnList.UseVisualStyleBackColor = false;
+            this.BtnList.Click += new System.EventHandler(this.BtnList_Click);
             // 
             // label4
             // 
@@ -207,7 +208,6 @@
             // 
             // CmbCustomerCity
             // 
-            this.CmbCustomerCity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CmbCustomerCity.FormattingEnabled = true;
             this.CmbCustomerCity.Location = new System.Drawing.Point(142, 217);
             this.CmbCustomerCity.Name = "CmbCustomerCity";
