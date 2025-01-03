@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CustomerTrackingAdoNet
@@ -122,6 +123,29 @@ namespace CustomerTrackingAdoNet
         private void BtnAdd_Click(object sender, EventArgs e)
         {
             addToCityDataToCityTable();
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            SqlCommand deleteCommand = new SqlCommand("Delete from TblCustomer where CustomerId=@customerId", connection.Connection());
+            deleteCommand.Parameters.AddWithValue("@customerId", TxtCustomerNo.Text);
+            DialogResult tepki = new DialogResult();
+            tepki = MessageBox.Show($"{TxtCustomerNo.Text} numaralı müşteriyi silmek istediginize emin misiniz?", "Emin misiniz?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (tepki == DialogResult.Yes)
+            {
+                if (TxtCustomerNo.Text.Trim() == "")
+                {
+                    MessageBox.Show("Boş numara girişi tekrar deneyin", "Hatalı giriş", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    deleteCommand.ExecuteNonQuery();
+              
+                }
+            }
+            dataGridCustomerList();
+            clearAreas();
+            connection.Connection().Close();
         }
     }
 }
