@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CustomerTrackingAdoNet
@@ -29,8 +23,6 @@ namespace CustomerTrackingAdoNet
             dataGridView1.DataSource = dataTable;
             connection.Connection().Close();
         }
-
-
         private void BtnList_Click(object sender, EventArgs e)
         {
             queryOption = "select CustomerId,CustomerName,CustomerSurname,CustomerBalance,CustomerStatus,CityName from TblCustomer Inner join TblCity on TblCity.CityId=TblCustomer.CustomerCity";
@@ -52,8 +44,8 @@ namespace CustomerTrackingAdoNet
                 DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
 
                 // TextBox'lara değerleri aktarma
-                TxtCustomerName.Text = selectedRow.Cells["CustomerName"].Value?.ToString(); 
-                TxtCustomerSurname.Text = selectedRow.Cells["CustomerSurname"].Value?.ToString(); 
+                TxtCustomerName.Text = selectedRow.Cells["CustomerName"].Value?.ToString();
+                TxtCustomerSurname.Text = selectedRow.Cells["CustomerSurname"].Value?.ToString();
                 TxtCustomerBalance.Text = selectedRow.Cells["CustomerBalance"].Value?.ToString();
                 TxtCustomerNo.Text = selectedRow.Cells["CustomerId"].Value?.ToString();
                 CmbCustomerCity.Items.Add(selectedRow.Cells["CityName"].Value?.ToString());
@@ -66,6 +58,70 @@ namespace CustomerTrackingAdoNet
         {
             queryOption = "Execute CustomerListWithCity";
             dataGridCustomerList();
+        }
+
+        private void CityListWithCombobox()
+        {
+            SqlCommand kmt = new SqlCommand("Select * from TblCity", connection.Connection());
+            SqlDataAdapter adapter = new SqlDataAdapter(kmt);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            CmbCustomerCity.ValueMember = "CityId";
+            CmbCustomerCity.DisplayMember = "CityName";
+            CmbCustomerCity.DataSource = table;
+            connection.Connection().Close();
+        }
+        private void FrmCustomer_Load(object sender, EventArgs e)
+        {
+            queryOption = "Execute CustomerListWithCity";
+            dataGridCustomerList();
+            CityListWithCombobox();
+        }
+
+        void clearAreas()
+        {
+            TxtCustomerBalance.Clear();
+            TxtCustomerName.Clear();
+            TxtCustomerSurname.Clear();
+            TxtCustomerNo.Clear();
+            CmbCustomerCity.SelectedIndex = -1;
+            radioButton1.Checked = false;
+            radioButton2.Checked = false;
+
+        }
+
+        private void addToCityDataToCityTable()
+        {
+            SqlCommand addCommand = new SqlCommand(
+                "insert into TblCustomer (CustomerName, CustomerSurname, CustomerBalance, CustomerStatus, CustomerCity) " +
+                "VALUES (@CustomerName, @CustomerSurname, @CustomerBalance, @CustomerStatus, @CustomerCity)", connection.Connection());
+
+            addCommand.Parameters.AddWithValue("@CustomerName", TxtCustomerName.Text.Trim());
+            addCommand.Parameters.AddWithValue("@CustomerSurname", TxtCustomerSurname.Text.Trim());
+            addCommand.Parameters.AddWithValue("@CustomerBalance", TxtCustomerBalance.Text.Trim());
+            addCommand.Parameters.AddWithValue("@CustomerCity", CmbCustomerCity.SelectedValue);
+
+            addCommand.Parameters.AddWithValue("@CustomerStatus", true);
+            if (radioButton1.Checked)
+            {
+                addCommand.Parameters.AddWithValue("@CustomerStatus", true);
+            }
+            if (radioButton2.Checked)
+            {
+                addCommand.Parameters.AddWithValue("@CustomerStatus", false);
+            }
+
+            addCommand.ExecuteNonQuery();
+            queryOption = "Execute CustomerListWithCity";
+            dataGridCustomerList();
+            clearAreas();
+        }
+
+
+
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            addToCityDataToCityTable();
         }
     }
 }
