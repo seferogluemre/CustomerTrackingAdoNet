@@ -82,6 +82,7 @@
             this.BtnMüsteriİslem.TabIndex = 3;
             this.BtnMüsteriİslem.Text = "Müşteri İşlemleri";
             this.BtnMüsteriİslem.UseVisualStyleBackColor = false;
+            this.BtnMüsteriİslem.Click += new System.EventHandler(this.BtnMüsteriİslem_Click);
             // 
             // button3
             // 

@@ -33,5 +33,11 @@ namespace CustomerTrackingAdoNet
                 Application.Exit();
             }
         }
+
+        private void BtnMüsteriİslem_Click(object sender, EventArgs e)
+        {
+            FrmCustomer frmCustomer = new FrmCustomer();
+            frmCustomer.Show();
+        }
     }
 }
