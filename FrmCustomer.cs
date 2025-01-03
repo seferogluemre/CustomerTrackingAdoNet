@@ -147,5 +147,71 @@ namespace CustomerTrackingAdoNet
             clearAreas();
             connection.Connection().Close();
         }
+
+        private void BtnUpdate_Click(object sender, EventArgs e)
+        {
+            SqlCommand updateCommand = new SqlCommand("UPDATE TblCustomer SET CustomerName = @CustomerName, CustomerSurname = @CustomerSurname, CustomerBalance = @CustomerBalance, CustomerStatus = @CustomerStatus, CustomerCity = @CustomerCity WHERE CustomerId = @CustomerID", connection.Connection());
+
+
+            // Parametreleri ekle
+            updateCommand.Parameters.AddWithValue("@CustomerName", TxtCustomerName.Text.Trim());
+            updateCommand.Parameters.AddWithValue("@CustomerSurname", TxtCustomerSurname.Text.Trim());
+            updateCommand.Parameters.AddWithValue("@CustomerBalance", Convert.ToDecimal(TxtCustomerBalance.Text.Trim()));
+            updateCommand.Parameters.AddWithValue("@CustomerCity", Convert.ToInt32(CmbCustomerCity.SelectedValue));
+
+            // RadioButton ile durum belirleme
+            if (radioButton1.Checked)
+            {
+                updateCommand.Parameters.AddWithValue("@CustomerStatus", true);
+            }
+            if (radioButton2.Checked)
+            {
+                updateCommand.Parameters.AddWithValue("@CustomerStatus", false);
+            }
+
+            // Güncellenecek kayıt ID'sini ekle
+            updateCommand.Parameters.AddWithValue("@CustomerID", Convert.ToInt32(TxtCustomerNo.Text.Trim()));
+
+            // Bağlantıyı aç ve sorguyu çalıştır
+            int rowsAffected = updateCommand.ExecuteNonQuery();
+
+            // Kullanıcıya işlem sonucunu bildir
+            if (rowsAffected > 0)
+            {
+                MessageBox.Show("Kayıt başarıyla güncellendi.", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Kayıt güncellenemedi. Lütfen ID'yi kontrol edin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            SqlCommand searchCommand = new SqlCommand("Select * from TblCustomer where CustomerName=@cityName", connection.Connection());
+            searchCommand.Parameters.AddWithValue("@cityName", TxtCustomerName.Text);
+            if (TxtCustomerName.Text.Trim() != "")
+            {
+                SqlDataReader dataReader = searchCommand.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    label4.Visible = true;
+                    label4.Text = "Şehir Sorgusu başarılı";
+                    // 3 saniye bekle
+                    TxtCustomerNo.Text = dataReader[0].ToString();
+                    TxtCustomerName.Text = dataReader[1].ToString();
+                    TxtCustomerSurname.Text = dataReader[2].ToString();
+                    TxtCustomerBalance.Text = dataReader[3].ToString();
+                }
+                else
+                {
+                    MessageBox.Show("Aranan müşteri bulunamadı");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Boş alan bırakmayınız", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

@@ -63,6 +63,7 @@
             this.BtnSearch.TabIndex = 26;
             this.BtnSearch.Text = "Ara";
             this.BtnSearch.UseVisualStyleBackColor = false;
+            this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // BtnUpdate
             // 
@@ -75,6 +76,7 @@
             this.BtnUpdate.TabIndex = 25;
             this.BtnUpdate.Text = "Güncelle";
             this.BtnUpdate.UseVisualStyleBackColor = false;
+            this.BtnUpdate.Click += new System.EventHandler(this.BtnUpdate_Click);
             // 
             // BtnDelete
             // 
