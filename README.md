@@ -1,4 +1,4 @@
-C# ve MSSQL kullanarak inşa ettiğim bir müşteri takip sistemi bulunmaktadır. Bu sistemde müşteri işlemleri ve şehir işlemleri gibi temel özellikler yer almaktadır.
+C# ve MSSQL kullanarak İnşa ettiğim bir müşteri takip sistemi bulunmaktadır. Bu sistemde müşteri işlemleri ve şehir işlemleri gibi temel özellikler yer almaktadır.
 
 Proje yapısı, Class temelli bir mimari kullanılarak oluşturulmuştur. Ayrıca, veritabanı işlemleri için Stored Procedure'ler (SQL Prosedürleri) kullanılmıştır. Bu sayede veri işleme süreçleri optimize edilmiş ve daha güvenli bir yapı elde edilmiştir.
 
