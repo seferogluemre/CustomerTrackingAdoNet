@@ -1,15 +1,11 @@
-C# ve MSSQL kullanarak İnşa ettiğim bir müşteri takip sistemi bulunmaktadır. Bu sistemde müşteri işlemleri ve şehir işlemleri gibi temel özellikler yer almaktadır.
+Customer Tracking System
+This project is a customer tracking system developed using C# and MSSQL. The system includes fundamental functionalities such as customer operations and city management.
 
-Proje yapısı, Class temelli bir mimari kullanılarak oluşturulmuştur. Ayrıca, veritabanı işlemleri için Stored Procedure'ler (SQL Prosedürleri) kullanılmıştır. Bu sayede veri işleme süreçleri optimize edilmiş ve daha güvenli bir yapı elde edilmiştir.
+The project architecture is based on class-based architecture, and Stored Procedures are used for database operations. This approach optimizes the data processing workflows and ensures a more secure structure.
 
-Başlıca Özellikler:
-Müşteri İşlemleri:
-Sistemde müşterilerin eklenmesi, güncellenmesi, silinmesi ve listelenmesi gibi işlemler yapılabilmektedir.
+Key Features:
+Customer Operations: Operations such as adding, updating, deleting, and listing customers can be performed.
+City Operations: City-related operations including adding, editing, and querying have been implemented.
+Stored Procedure Usage: Stored Procedures are created and integrated into the application to improve performance and manage complex queries in the database.
+This system offers a user-friendly interface while operating efficiently. It is designed with a flexible and scalable structure, making it easy to add new features in the future.
 
-Şehir İşlemleri:
-Şehir bilgileriyle ilgili ekleme, düzenleme ve sorgulama işlemleri gerçekleştirilmiştir.
-
-Stored Procedure Kullanımı:
-Veritabanı tarafında performansı artırmak ve karmaşık sorguları yönetmek amacıyla Stored Procedure'ler oluşturulmuş ve uygulamaya entegre edilmiştir.
-
-Bu sistem, hem kullanıcı dostu bir arayüz sunmakta hem de verimli bir şekilde çalışmaktadır. Uygulama esnek ve ölçeklenebilir bir yapıda tasarlandığı için ileride yeni özelliklerin eklenmesi kolay olacaktır.
